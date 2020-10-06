@@ -12,7 +12,7 @@ class RollDiceServlet {
         return "RollDice";
     }
 
-    @GetMapping("/roll-dice")
+    @PostMapping("/roll-dice")
     public String showDiceResult(@RequestParam(name = "number") int num, Model model) {
        int randomNum = (int)((Math.random() * 6) + 1);
        String message = "you selected " + num + " and the number rolled was " + randomNum + ".";
