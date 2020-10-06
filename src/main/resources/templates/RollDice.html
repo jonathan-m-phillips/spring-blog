@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Roll Dice</title>
+    <link th:replace="partials/links :: links"/>
+</head>
+<body>
+
+<form action="/roll-dice" method="post">
+    <h2>Choose number: </h2>
+    <button id="num1"></button>
+</form>
+
+<script th:replace="partials/scripts :: scripts"></script>
+</body>
+</html>
