@@ -4,19 +4,24 @@
     <meta charset="UTF-8">
     <title>Show Posts</title>
     <link th:replace="partials/links :: links"/>
+    <style>
+        .container {
+
+        }
+    </style>
 </head>
 <body>
 <header th:replace="partials/header :: header"></header>
 <nav th:replace="partials/navbar :: navbar"></nav>
 
 <main class="container">
-    <show_post th:if="${posts}">
+    <div class="show-post" th:if="${posts}">
         <div th:each="item : ${posts}">
             <h2 th:text="${item.title}"></h2>
             <p th:text="${item.body}"></p>
             <br>
         </div>
-    </show_post>
+    </div>
 </main>
 
 <footer th:replace="partials/footer :: footer"></footer>
