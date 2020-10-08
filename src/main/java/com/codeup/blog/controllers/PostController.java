@@ -40,5 +40,22 @@ public class PostController {
         return "Posting form";
     }
 
+    @RequestMapping(path = "/posts/delete/{id}", method = RequestMethod.GET)
+    public String deletePost(@PathVariable long id, Model model) {
+        Post post = postRepo.getAdById(id);
+        if (post!= null) {
+            postRepo.delete(post);
+        }
+        return "posts/index";
+    }
+
+    @RequestMapping(path = "/posts/edit/{id}", method = RequestMethod.GET)
+    public String editPost(@PathVariable long id, Model model) {
+        Post post = postRepo.getAdById(id);
+        if (post!= null) {
+            postRepo.delete(post);        }
+        return "posts/index";
+    }
+
 
 }
