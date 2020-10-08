@@ -34,12 +34,14 @@ public class PostController {
     }
 
     @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
-    public String postPost(@RequestParam(name = "title") String title, @RequestParam(name = "body") String body, Model model) {
+    public String postPost(@RequestParam(name = "title") String title,
+                           @RequestParam(name = "body") String body,
+                           Model model) {
         Post post = new Post();
         post.setTitle(title);
         post.setBody(body);
         postRepo.save(post);
-        return "posts/" + post.getId();
+        return "redirect:/posts";
     }
 
     @RequestMapping(path = "/posts/delete/{id}", method = RequestMethod.GET)
@@ -51,14 +53,18 @@ public class PostController {
         return "posts/index";
     }
 
-    @RequestMapping(path = "/posts/edit/{id}", method = RequestMethod.GET)
-    public String editPost(@PathVariable long id, Model model) {
+    @RequestMapping(path = "/posts/edit/", method = RequestMethod.GET)
+    public String editPost(@RequestParam(name = "id") long id,
+                           @RequestParam(name = "title") String title,
+                           @RequestParam(name = "body") String body
+                           ) {
         Post post = postRepo.getPostById(id);
         if (post == null) {
             return "redirect:/posts/index";
         }
-        model.addAttribute("post", post);
-        return "posts/index";
+        post.setTitle(title);
+        post.setBody(body);
+        return "redirect:/posts/" + post.getId();
     }
 
 

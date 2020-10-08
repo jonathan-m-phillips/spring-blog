@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Show A Post</title>
+    <title>Create A Post</title>
     <link th:replace="partials/links :: links"/>
 </head>
 <body>
@@ -12,9 +12,10 @@
 <main class="container">
     <form action="/posts/create" method="post">
         <label for="title">Enter Post Title:</label><br>
-        <input type="text" id="title" name="title">
+        <input type="text" id="title" name="title"><br>
         <label for="body">Enter Post Body:</label><br>
-        <textarea name="body" id="body" cols="72" rows="4"></textarea>
+        <textarea name="body" id="body" cols="72" rows="4"></textarea><br>
+        <button type="submit">Submit</button>
     </form>
 </main>
 

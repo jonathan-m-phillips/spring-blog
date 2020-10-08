@@ -4,11 +4,6 @@
     <meta charset="UTF-8">
     <title>Show Posts</title>
     <link th:replace="partials/links :: links"/>
-    <style>
-        .container {
-
-        }
-    </style>
 </head>
 <body>
 <header th:replace="partials/header :: header"></header>
@@ -19,12 +14,20 @@
         <div th:each="item : ${posts}">
             <h2 th:text="${item.title}"></h2>
             <p th:text="${item.body}"></p>
-            <br>
+            <form style="display: inline" th:action="@{'/posts/' + ${item.id}}">
+                <button>View</button>
+            </form>
+            <form style="display: inline" th:action="@{'/posts/edit/' + ${item.id}}">
+                <button>Edit</button>
+            </form>
+            <form style="display: inline" th:action="@{'/posts/delete/' + ${item.id}}">
+                <button>Delete</button>
+            </form>
         </div>
     </div>
 </main>
 
 <footer th:replace="partials/footer :: footer"></footer>
-<scripts th:replace="partials/scripts :: scripts"></scripts>
+<script th:replace="partials/scripts :: scripts"></script>
 </body>
 </html>
