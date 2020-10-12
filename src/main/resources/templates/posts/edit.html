@@ -11,11 +11,12 @@
 
 <main class="container">
     <form action="/posts/edit" method="post">
-        <input type="text">
-        <label for="title">Enter Post Title:</label><br>
-        <input type="text" id="title" name="title" th:value="${post.title}"/><br>
-        <label for="body">Enter Post Body:</label><br>
-        <textarea name="body" id="body" cols="72" rows="4" th:text="${post.body}"></textarea><br>
+        <input style="visibility: hidden" type="text" name="id" th:value="${post.id}"/>
+        <input style="visibility: hidden" type="text" name="fred" value="fred"/>
+        <label for="title">Enter Post Title: </label> <br>
+        <input type="text" id="title" name="title" th:value="${post.title}" /> <br>
+        <label for="body">Enter your post: </label> <br>
+        <textarea name="body" id="body" cols="72" rows="4" th:text="${post.body}"></textarea> <br>
         <button type="submit">Submit</button>
     </form>
 </main>

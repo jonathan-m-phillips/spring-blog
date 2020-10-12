@@ -57,23 +57,24 @@ public class PostController {
     public String showEditPost(@PathVariable long id, Model model) {
         Post post = postRepo.getPostById(id);
         if (post == null) {
-            return "redirect:/posts/index";
+            return "redirect:/posts";
         }
         model.addAttribute("post", post);
         return "posts/edit";
     }
 
-    @GetMapping("/posts/edit/")
+    @PostMapping("/posts/edit")
     public String editPost(@RequestParam(name = "id") long id,
                            @RequestParam(name = "title") String title,
                            @RequestParam(name = "body") String body
                            ) {
         Post post = postRepo.getPostById(id);
         if (post == null) {
-            return "redirect:/posts/index";
+            return "redirect:/posts";
         }
         post.setTitle(title);
         post.setBody(body);
+        postRepo.save(post);
         return "redirect:/posts/" + post.getId();
     }
 

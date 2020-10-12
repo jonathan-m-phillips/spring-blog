@@ -10,7 +10,7 @@
 <nav th:replace="partials/navbar :: navbar"></nav>
 
 <main class="container">
-    <div class="show-post" th:if="${posts}">
+    <show_post th:if="${posts}">
         <div th:each="item : ${posts}">
             <h2 th:text="${item.title}"></h2>
             <p th:text="${item.body}"></p>
@@ -21,13 +21,15 @@
                 <button>Edit</button>
             </form>
             <form style="display: inline" th:action="@{'/posts/delete/' + ${item.id}}">
-                <button>Delete</button>
+                <button>delete</button>
             </form>
+            <br>
+            <br>
         </div>
-    </div>
+    </show_post>
 </main>
 
 <footer th:replace="partials/footer :: footer"></footer>
-<script th:replace="partials/scripts :: scripts"></script>
+<scripts th:replace="partials/scripts :: scripts"></scripts>
 </body>
 </html>
