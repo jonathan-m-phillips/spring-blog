@@ -21,7 +21,7 @@ public class PostController {
         return "posts/index";
     }
 
-    @RequestMapping(path = "/posts/{id}", method = RequestMethod.GET)
+    @GetMapping("/posts/{id}")
     public String showOnePost(@PathVariable long id, Model model) {
         Post post = postRepo.getPostById(id);
         model.addAttribute("post", post);
@@ -41,19 +41,29 @@ public class PostController {
         post.setTitle(title);
         post.setBody(body);
         postRepo.save(post);
-        return "redirect:/posts";
+        return "redirect:/posts/" + post.getId();
     }
 
-    @RequestMapping(path = "/posts/delete/{id}", method = RequestMethod.GET)
+    @GetMapping("/posts/delete/{id}")
     public String deletePost(@PathVariable long id, Model model) {
         Post post = postRepo.getPostById(id);
         if (post != null) {
             postRepo.delete(post);
         }
-        return "posts/index";
+        return "redirect:/posts";
     }
 
-    @RequestMapping(path = "/posts/edit/", method = RequestMethod.GET)
+    @GetMapping("/posts/edit/{id}")
+    public String showEditPost(@PathVariable long id, Model model) {
+        Post post = postRepo.getPostById(id);
+        if (post == null) {
+            return "redirect:/posts/index";
+        }
+        model.addAttribute("post", post);
+        return "posts/edit";
+    }
+
+    @GetMapping("/posts/edit/")
     public String editPost(@RequestParam(name = "id") long id,
                            @RequestParam(name = "title") String title,
                            @RequestParam(name = "body") String body
