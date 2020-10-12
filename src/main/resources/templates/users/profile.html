@@ -2,23 +2,24 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Show A Post</title>
+    <title>Show Posts</title>
     <link th:replace="partials/links :: links"/>
 </head>
 <body>
 <header th:replace="partials/header :: header"></header>
 <nav th:replace="partials/navbar :: navbar"></nav>
 
+<h1>Welcome to <span th:text="${user.username}"></span>'s Profile Page</h1>
+
 <main class="container">
-    <h2 th:text="${post.title}"></h2>
-    <p th:text="${post.body}"></p>
-    <p>User email: <span th:text="${post.user.email}"></span></p>
-    <form style="display: inline" th:action="@{'/posts/edit/' + ${post.id}}">
-        <button>Edit</button>
-    </form>
-    <form style="display: inline" th:action="@{'/posts/delete/' + ${post.id}}">
-        <button>delete</button>
-    </form>
+    <h2>Ads by this user:</h2>
+    <show_post th:if="${user.ads}">
+        <div th:each="item : ${user.ads}">
+            <h2 th:text="${item.title}"></h2>
+            <p th:text="${item.description}"></p>
+            <br>
+        </div>
+    </show_post>
 </main>
 
 <footer th:replace="partials/footer :: footer"></footer>

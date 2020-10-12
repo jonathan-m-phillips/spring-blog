@@ -81,5 +81,14 @@ public class PostController {
         return "redirect:/posts/" + post.getId();
     }
 
+    @GetMapping("posts/hardcoded/create")
+    public String createHardcodedAd() {
+        Post post = new Post();
+        post.setTitle("This is a hardcoded blog post");
+        post.setBody("I hardcoded this blog post.");
+        post.setUser(userRepo.getOne(1L));
+        postRepo.save(post);
+        return "redirect:/posts";
+    }
 
 }
