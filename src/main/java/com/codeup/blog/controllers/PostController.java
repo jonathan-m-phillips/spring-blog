@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 public class PostController {
     private final PostRepository postRepo;
+    private final
 
-    public PostController(PostRepository postRepo){
+    public PostController(PostRepository postRepo, ){
         this.postRepo = postRepo;
     }
 
