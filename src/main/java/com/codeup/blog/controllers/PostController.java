@@ -31,12 +31,13 @@ public class PostController {
         return "posts/show";
     }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.GET)
-    public String createPost() {
+    @GetMapping("/posts/create")
+    public String createPost(Model model) {
+        model.addAttribute("post", new Post());
         return "posts/create";
     }
 
-    @RequestMapping(path = "/posts/create", method = RequestMethod.POST)
+    @PostMapping("/posts/create")
     public String postPost(@RequestParam(name = "title") String title,
                            @RequestParam(name = "body") String body,
                            Model model) {
@@ -44,7 +45,7 @@ public class PostController {
         post.setTitle(title);
         post.setBody(body);
         postRepo.save(post);
-        return "redirect:/posts/" + post.getId();
+        return "redirect:/posts";
     }
 
     @GetMapping("/posts/delete/{id}")
