@@ -40,13 +40,19 @@ public class PostController {
         return "posts/create";
     }
 
+//    @PostMapping("/posts/create")
+//    public String postPost(@RequestParam(name = "title") String title,
+//                           @RequestParam(name = "body") String body,
+//                           Model model) {
+//        Post post = new Post();
+//        post.setTitle(title);
+//        post.setBody(body);
+//        postRepo.save(post);
+//        return "redirect:/posts";
+//    }
+
     @PostMapping("/posts/create")
-    public String postPost(@RequestParam(name = "title") String title,
-                           @RequestParam(name = "body") String body,
-                           Model model) {
-        Post post = new Post();
-        post.setTitle(title);
-        post.setBody(body);
+    public String postPost(@ModelAttribute Post post) {
         postRepo.save(post);
         return "redirect:/posts";
     }
