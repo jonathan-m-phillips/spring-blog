@@ -16,12 +16,12 @@ import java.util.List;
 public class PostController {
     private final PostRepository postRepo;
     private final UserRepository userRepo;
-//    private final EmailService emailService;
+    private final EmailService emailService;
 
     public PostController(PostRepository postRepo, UserRepository userRepo, EmailService emailService){
         this.postRepo = postRepo;
         this.userRepo = userRepo;
-//        this.emailService = emailService;
+        this.emailService = emailService;
     }
 
     @GetMapping("/posts")
@@ -51,20 +51,29 @@ public class PostController {
 
     @PostMapping("/posts/create")
     public String postPost(@ModelAttribute Post post) {
+        String update;
+        if (post.getId() == 0) {
+            update = "Create Post: ";
+            post.setUser(userRepo.findAll().get(0));
+        } else {
+            update = "Edited Post: ";
+            post.setUser(postRepo.getOne(post.getId()).getUser());
+        }
         postRepo.save(post);
-//        emailService.prepareAndSend(post,
-//                "Created Post: " + post.getTitle(),
-//                post.getTitle() + "\n\n" + post.getBody());
+        emailService.prepareAndSend(post,
+                "Created Post: " + post.getTitle(),
+                post.getTitle() + "\n\n" + post.getBody());
         return "redirect:/posts/" + post.getId();
     }
 
     @GetMapping("/posts/delete/{id}")
     public String deletePost(@PathVariable long id, Model model) {
         Post post = postRepo.getPostById(id);
+        post.setUser(postRepo.getOne(id).getUser());
         postRepo.delete(post);
-//            emailService.prepareAndSend(post,
-//                    "Deleted Post: " + post.getTitle(),
-//                    post.getTitle() + "\n\n" + post.getBody());
+            emailService.prepareAndSend(post,
+                    "Deleted Post: " + post.getTitle(),
+                    post.getTitle() + "\n\n" + post.getBody());
         return "redirect:/posts";
     }
 
