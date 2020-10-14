@@ -9,28 +9,35 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Controller
 public class PostController {
     private final PostRepository postRepo;
     private final UserRepository userRepo;
-    private final EmailService emailService;
+//    private final EmailService emailService;
 
     public PostController(PostRepository postRepo, UserRepository userRepo, EmailService emailService){
         this.postRepo = postRepo;
         this.userRepo = userRepo;
-        this.emailService = emailService;
+//        this.emailService = emailService;
     }
 
-    @RequestMapping(path = "/posts", method = RequestMethod.GET)
+    @GetMapping("/posts")
     public String showAllPosts(Model model) {
-        model.addAttribute("posts", postRepo.findAll());
+        List<Post> posts = postRepo.findAll();
+        model.addAttribute("posts", posts);
         return "posts/index";
     }
 
     @GetMapping("/posts/{id}")
     public String showOnePost(@PathVariable long id, Model model) {
         Post post = postRepo.getPostById(id);
+        if (post.getUser() == null) {
+            List<User> users = userRepo.findAll();
+            post.setUser(users.get(0));
+        }
         model.addAttribute("post", post);
         return "posts/show";
     }
@@ -45,62 +52,33 @@ public class PostController {
     @PostMapping("/posts/create")
     public String postPost(@ModelAttribute Post post) {
         postRepo.save(post);
-        User user = userRepo.findAll().get(0);
-        post.setUser(user);
-        emailService.prepareAndSend(post,
-                "Created Post: " + post.getTitle(),
-                post.getTitle() + "\n\n" + post.getBody());
-        return "redirect:/posts";
+//        emailService.prepareAndSend(post,
+//                "Created Post: " + post.getTitle(),
+//                post.getTitle() + "\n\n" + post.getBody());
+        return "redirect:/posts/" + post.getId();
     }
 
     @GetMapping("/posts/delete/{id}")
     public String deletePost(@PathVariable long id, Model model) {
         Post post = postRepo.getPostById(id);
-        if (post != null) {
-            postRepo.delete(post);
-            emailService.prepareAndSend(post,
-                    "Deleted Post: " + post.getTitle(),
-                    post.getTitle() + "\n\n" + post.getBody());
-        }
+        postRepo.delete(post);
+//            emailService.prepareAndSend(post,
+//                    "Deleted Post: " + post.getTitle(),
+//                    post.getTitle() + "\n\n" + post.getBody());
         return "redirect:/posts";
     }
 
     @GetMapping("/posts/edit/{id}")
-    public String showEditPost(@PathVariable long id, Model model) {
+    public String editPost(@PathVariable long id, Model model) {
         Post post = postRepo.getPostById(id);
-        if (post == null) {
-            return "redirect:/posts";
-        }
         model.addAttribute("post", post);
-        return "posts/edit";
+        return "posts/create";
     }
 
     @PostMapping("/posts/edit")
-    public String editPost(@RequestParam(name = "id") long id,
-                           @RequestParam(name = "title") String title,
-                           @RequestParam(name = "body") String body
-                           ) {
-        Post post = postRepo.getPostById(id);
-        if (post == null) {
-            return "redirect:/posts";
-        }
-        post.setTitle(title);
-        post.setBody(body);
+    public String updatePost(@ModelAttribute Post post) {
         postRepo.save(post);
-        emailService.prepareAndSend(post,
-                "Edited Post: " + post.getTitle(),
-                post.getTitle() + "\n\n" + post.getBody());
         return "redirect:/posts/" + post.getId();
-    }
-
-    @GetMapping("posts/hardcoded/create")
-    public String createHardcodedAd() {
-        Post post = new Post();
-        post.setTitle("This is a hardcoded blog post");
-        post.setBody("I hardcoded this blog post.");
-        post.setUser(userRepo.getOne(1L));
-        postRepo.save(post);
-        return "redirect:/posts";
     }
 
 }
