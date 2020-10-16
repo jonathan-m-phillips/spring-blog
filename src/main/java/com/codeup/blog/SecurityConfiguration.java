@@ -52,7 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 /************** Pages that DO require authentication ***********/
                 .and()
                 .authorizeRequests()
-                .antMatchers("/posts/create", "/posts/{id}/edit")
+                .antMatchers("/posts/create", "/posts/edit/{id}")
                 .authenticated()
         ;
 
